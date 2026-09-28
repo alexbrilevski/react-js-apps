@@ -1,7 +1,19 @@
+import { useState } from "react";
 import sunny from "./../assets/images/sunny.png";
 import "./WeatherApp.css";
 
 const WeatherApp = () => {
+  const [data, setData] = useState();
+
+  const search = async () => {
+    const apiKey = import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=London&units=metric&appid=${apiKey}`;
+    const response = await fetch(url);
+    const searchData = await response.json();
+    console.log(searchData);
+    setData(searchData);
+  };
+
   return (
     <div className="container">
       <div className="weather-app">
@@ -12,7 +24,7 @@ const WeatherApp = () => {
           </div>
           <div className="search-bar">
             <input type="text" placeholder="Enter Location" />
-            <i className="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass" onClick={search}></i>
           </div>
         </div>
         <div className="weather">
