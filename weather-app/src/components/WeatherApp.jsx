@@ -81,6 +81,31 @@ const WeatherApp = () => {
       ? backgroundImage.replace("to right", "to top")
       : "linear-gradient(to top, #f3b07c, #fcd283)";
 
+  const currentDate = new Date();
+
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const dayOfWeek = daysOfWeek[currentDate.getDay()];
+  const month = months[currentDate.getMonth()];
+  const dayOfMonth = currentDate.getDate();
+
+  const formattedDate = `${dayOfWeek}, ${dayOfMonth} ${month}`;
+
   return (
     <div className="container" style={{ backgroundImage }}>
       <div
@@ -116,7 +141,7 @@ const WeatherApp = () => {
           </div>
         </div>
         <div className="weather-date">
-          <p>Mon, 28 Sep</p>
+          <p>{formattedDate}</p>
         </div>
         <div className="weather-data">
           <div className="humidity">
