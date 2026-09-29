@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import sunny from "./../assets/images/sunny.png";
+import cloudy from "../assets/images/cloudy.png";
+import rainy from "../assets/images/rainy.png";
+import snowy from "../assets/images/snowy.png";
 import "./WeatherApp.css";
 
 const WeatherApp = () => {
@@ -40,9 +43,50 @@ const WeatherApp = () => {
     }
   };
 
+  const weatherStyleData = {
+    Clear: {
+      image: sunny,
+      backgroundImage: "linear-gradient(to right, #f3b07c, #fcd283)",
+    },
+    Clouds: {
+      image: cloudy,
+      backgroundImage: "linear-gradient(to right, #57d6d4, #71eeec)",
+    },
+    Rain: {
+      image: rainy,
+      backgroundImage: "linear-gradient(to right, #5bc8fb, #80eaff)",
+    },
+    Snow: {
+      image: snowy,
+      backgroundImage: "linear-gradient(to right, #aff2ff, #fff)",
+    },
+    Haze: {
+      image: cloudy,
+      backgroundImage: "linear-gradient(to right, #57d6d4, #71eeec)",
+    },
+    Mist: {
+      image: cloudy,
+      backgroundImage: "linear-gradient(to right, #57d6d4, #71eeec)",
+    },
+  };
+
+  const weatherImage = data.weather
+    ? weatherStyleData[data.weather[0].main].image
+    : null;
+  const backgroundImage = data.weather
+    ? weatherStyleData[data.weather[0].main].backgroundImage
+    : "linear-gradient(to right, #f3b07c, #fcd283)";
+  const backgroundImageApp =
+    backgroundImage && backgroundImage.replace
+      ? backgroundImage.replace("to right", "to top")
+      : "linear-gradient(to top, #f3b07c, #fcd283)";
+
   return (
-    <div className="container">
-      <div className="weather-app">
+    <div className="container" style={{ backgroundImage }}>
+      <div
+        className="weather-app"
+        style={{ backgroundImage: backgroundImageApp }}
+      >
         <div className="search">
           <div className="search-top">
             <i className="fa-solid fa-location-dot"></i>
@@ -60,7 +104,10 @@ const WeatherApp = () => {
           </div>
         </div>
         <div className="weather">
-          <img src={sunny} alt="sunny" />
+          <img
+            src={weatherImage}
+            alt={`${data.weather ? data.weather[0].main : ""}`}
+          />
           <div className="weather-type">
             {data.weather ? data.weather[0].main : null}
           </div>
