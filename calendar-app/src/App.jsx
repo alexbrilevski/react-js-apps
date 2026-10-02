@@ -2,7 +2,7 @@ import CalendarApp from "./components/CalendarApp";
 
 const App = () => {
   return (
-    <div>
+    <div className="container">
       <CalendarApp />
     </div>
   );
