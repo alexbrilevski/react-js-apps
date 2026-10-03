@@ -1,3 +1,5 @@
+import "./CalendarApp.css";
+
 const CalendarApp = () => {
   return (
     <div className="calendar-app">
@@ -23,7 +25,7 @@ const CalendarApp = () => {
         <div className="days">
           <span>1</span>
           <span>2</span>
-          <span>3</span>
+          <span className="current-day">3</span>
           <span>4</span>
           <span>5</span>
           <span>6</span>
