@@ -27,6 +27,7 @@ const CalendarApp = () => {
   const [events, setEvents] = useState([]);
   const [eventTime, setEventTime] = useState({ hours: "00", minutes: "00" });
   const [eventText, setEventText] = useState("");
+  const [editingEvent, setEditingEvent] = useState(null);
 
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -62,14 +63,18 @@ const CalendarApp = () => {
       setShowEventPopup(true);
       setEventTime({ hours: "00", minutes: "00" });
       setEventText("");
+      setEditingEvent(null);
     }
   };
 
   const handleEventTimeChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
-    setEventTime((prevTime) => ({ ...prevTime, [name]: value.padStart(2, '0') }))
-  }
+    setEventTime((prevTime) => ({
+      ...prevTime,
+      [name]: value.padStart(2, "0"),
+    }));
+  };
 
   const handleEventTextChange = (e) => {
     if (e.target.value.length <= 60) {
@@ -79,16 +84,47 @@ const CalendarApp = () => {
 
   const handleEventSubmit = () => {
     const newEvent = {
-      id: `e-${Date.now()}-${Math.random().toString(36)}`,
+      id: editingEvent
+        ? editingEvent.id
+        : `e-${Date.now()}-${Math.random().toString(36)}`,
       date: selectedDate,
       time: `${eventTime.hours.padStart(2, "0")}:${eventTime.minutes.padStart(2, "0")}`,
       text: eventText,
     };
 
-    setEvents((prevEvents) => [...prevEvents, newEvent]);
+    setEvents((prevEvents) => {
+      let updatedEvents = [...prevEvents];
+      if (editingEvent) {
+        updatedEvents = updatedEvents.map((event) =>
+          event.id === editingEvent.id ? newEvent : event,
+        );
+      } else {
+        updatedEvents.push(newEvent);
+      }
+
+      updatedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      return updatedEvents;
+    });
     setEventTime({ hours: "00", minutes: "00" });
     setEventText("");
     setShowEventPopup(false);
+    setEditingEvent(null);
+  };
+
+  const handleEditEvent = (event) => {
+    setSelectedDate(new Date(event.date));
+    setEventTime({
+      hours: event.time.split(":")[0],
+      minutes: event.time.split(":")[1],
+    });
+    setEventText(event.text);
+    setEditingEvent(event);
+    setShowEventPopup(true);
+  };
+
+  const handleDeleteEvent = (id) => {
+    setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
   };
 
   return (
@@ -159,7 +195,7 @@ const CalendarApp = () => {
               onChange={handleEventTextChange}
             ></textarea>
             <button className="event-popup-btn" onClick={handleEventSubmit}>
-              Add Event
+              {editingEvent ? "Update Event" : "Add Event"}
             </button>
             <button
               className="close-event-popup"
@@ -180,8 +216,14 @@ const CalendarApp = () => {
             </div>
             <div className="event-text">{event.text}</div>
             <div className="event-buttons">
-              <i className="bx bxs-edit-alt"></i>
-              <i className="bx bxs-message-alt-x"></i>
+              <i
+                className="bx bxs-edit-alt"
+                onClick={() => handleEditEvent(event)}
+              ></i>
+              <i
+                className="bx bxs-message-alt-x"
+                onClick={() => handleDeleteEvent(event.id)}
+              ></i>
             </div>
           </div>
         ))}

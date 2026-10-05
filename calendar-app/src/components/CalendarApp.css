@@ -113,6 +113,13 @@
   width: 60%;
   height: 100%;
   padding: 3rem 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.events::-webkit-scrollbar {
+  display: none;
 }
 
 .event-popup {
