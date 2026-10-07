@@ -2,7 +2,7 @@ import News from "./components/News";
 
 const App = () => {
   return (
-    <div>
+    <div className="container">
       <News />
     </div>
   );
