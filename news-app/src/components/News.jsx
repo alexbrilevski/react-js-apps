@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ImageWithFallback } from "./ImageWithFallback";
 import noImg from "../assets/images/no-img.png";
 import "./News.css";
 
@@ -66,7 +67,11 @@ const News = () => {
         <div className="news-section">
           {headline && (
             <div className="headline">
-              <img src={headline.image || noImg} alt={headline.title} />
+              <ImageWithFallback
+                fallbackSrc={noImg}
+                src={headline.image}
+                alt={headline.title}
+              />
               <h2 className="headline-title">{headline.title}</h2>
             </div>
           )}
@@ -74,7 +79,11 @@ const News = () => {
           <div className="news-grid">
             {news.map((article) => (
               <div key={article.id} className="news-grid-item">
-                <img src={article.image || noImg} alt={article.title} />
+                <ImageWithFallback
+                  fallbackSrc={noImg}
+                  src={article.image}
+                  alt={article.title}
+                />
                 <h3>{article.title}</h3>
               </div>
             ))}
