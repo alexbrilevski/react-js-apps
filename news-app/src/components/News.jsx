@@ -20,16 +20,16 @@ const categories = [
 
 const News = () => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [selectedArticle, setSelectedArticle] = useState(null);
   const [headline, setHeadline] = useState(null);
   const [news, setNews] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchNews = async () => {
-      // const response = await axios.get(
-      //   `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&country=us&max=10&apikey=${apiKey}`,
-      // );
-      const response = "";
-      console.log(response);
+      const response = await axios.get(
+        `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&country=us&max=10&apikey=${apiKey}`,
+      );
 
       const fetchedNews = response.data.articles;
 
@@ -43,6 +43,16 @@ const News = () => {
   const handleSelectCategory = (e, category) => {
     e.preventDefault();
     setSelectedCategory(category);
+  };
+
+  const handleArticleClick = (article) => {
+    setSelectedArticle(article);
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setSelectedArticle(null);
+    setShowModal(false);
   };
 
   return (
@@ -68,7 +78,10 @@ const News = () => {
         </nav>
         <div className="news-section">
           {headline && (
-            <div className="headline">
+            <div
+              className="headline"
+              onClick={() => handleArticleClick(headline)}
+            >
               <ImageWithFallback
                 fallbackSrc={noImg}
                 src={headline.image}
@@ -80,7 +93,11 @@ const News = () => {
 
           <div className="news-grid">
             {news.map((article) => (
-              <div key={article.id} className="news-grid-item">
+              <div
+                key={article.id}
+                className="news-grid-item"
+                onClick={() => handleArticleClick(article)}
+              >
                 <ImageWithFallback
                   fallbackSrc={noImg}
                   src={article.image}
@@ -91,7 +108,11 @@ const News = () => {
             ))}
           </div>
         </div>
-        <NewsModal/>
+        <NewsModal
+          show={showModal}
+          article={selectedArticle}
+          onClose={handleModalClose}
+        />
       </div>
       <footer>
         <p className="copyright">
