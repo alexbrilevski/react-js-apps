@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ImageWithFallback } from "./ImageWithFallback";
+import NewsModal from "./NewsModal";
 import noImg from "../assets/images/no-img.png";
 import "./News.css";
 
@@ -24,9 +25,10 @@ const News = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
-      const response = await axios.get(
-        `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&country=us&max=10&apikey=${apiKey}`,
-      );
+      // const response = await axios.get(
+      //   `https://gnews.io/api/v4/top-headlines?category=${selectedCategory}&lang=en&country=us&max=10&apikey=${apiKey}`,
+      // );
+      const response = "";
       console.log(response);
 
       const fetchedNews = response.data.articles;
@@ -89,6 +91,7 @@ const News = () => {
             ))}
           </div>
         </div>
+        <NewsModal/>
       </div>
       <footer>
         <p className="copyright">
