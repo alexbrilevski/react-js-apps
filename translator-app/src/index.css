@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Righteous&family=Russo+One&family=Shojumaru&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --font-righteous: 'Righteous', sans-serif;
+  --font-russo-one: 'Russo One', sans-serif;
+  --font-noto-sans-jp: 'Noto Sans JP', sans-serif;
+  --font-shojumaru: 'shojumaru', system-ui;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  font-family: "Russo One", sans-serif;
+}
