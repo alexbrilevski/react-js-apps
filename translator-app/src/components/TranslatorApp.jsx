@@ -82,7 +82,7 @@ const TranslatorApp = ({ onClose }) => {
   };
 
   return (
-    <div className="relative flex flex-col justify-center items-center gap-y-4 w-full px-6 pt-12 pb-6">
+    <div className="relative flex flex-col justify-center items-center gap-y-4 w-full px-6 sm:px-8 pt-12 pb-6">
       <button className="absolute top-4 right-4">
         <i
           className="fa-solid fa-xmark text-xl text-gray-300 cursor-pointer"

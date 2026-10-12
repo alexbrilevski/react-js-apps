@@ -27,9 +27,9 @@ body {
 }
 
 .language {
-  @apply text-sm text-right uppercase cursor-pointer;
+  @apply text-sm sm:text-lg text-right uppercase cursor-pointer;
 }
 
 .textarea {
-  @apply w-full h-48 px-4 py-2 bg-[#151515] shadow-md shadow-black rounded-lg font-righteous font-light leading-5 resize-none;
+  @apply w-full h-48 max-[392px]:h-44 px-4 py-2 bg-[#151515] shadow-md shadow-black rounded-lg font-righteous max-[392px]:text-sm font-light leading-5 resize-none;
 }
