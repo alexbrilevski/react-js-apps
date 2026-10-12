@@ -7,6 +7,10 @@ const TranslatorApp = ({ onClose }) => {
     useState(null);
   const [selectedLanguageFrom, setSelectedLanguageFrom] = useState("en");
   const [selectedLanguageTo, setSelectedLanguageTo] = useState("en");
+  const [inputText, setInputText] = useState("");
+  const [translatedText, setTranslatedText] = useState("");
+  const [charsCount, setCharsCount] = useState(0);
+  const maxChars = 200;
 
   const handleLanguageClick = (type) => {
     setCurrentLanguageSelection(type);
@@ -25,6 +29,37 @@ const TranslatorApp = ({ onClose }) => {
   const handleSwapLanguage = () => {
     setSelectedLanguageFrom(selectedLanguageTo);
     setSelectedLanguageTo(selectedLanguageFrom);
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.currentTarget.value;
+
+    if (value.length <= maxChars) {
+      setCharsCount(value.length);
+      setInputText(value);
+    }
+  };
+
+  const handleTranslate = async () => {
+    if (!inputText.trim()) {
+      setTranslatedText("");
+      return;
+    }
+
+    const response = await fetch(
+      `https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=${selectedLanguageFrom}|${selectedLanguageTo}`,
+    );
+
+    const data = await response.json();
+
+    setTranslatedText(data.responseData.translatedText);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleTranslate();
+    }
   };
 
   return (
@@ -63,14 +98,28 @@ const TranslatorApp = ({ onClose }) => {
         </div>
       )}
       <div className="relative w-full">
-        <textarea className="textarea text-gray-200"></textarea>
-        <div className="absolute bottom-2 right-4 text-gray-400">0/200</div>
+        <textarea
+          className="textarea text-gray-200"
+          value={inputText}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+        ></textarea>
+        <div className="absolute bottom-2 right-4 text-gray-400">
+          {charsCount}/{maxChars}
+        </div>
       </div>
-      <button className="flex justify-center items-center w-12 h-12 bg-gradient-to-r from-[#b6f492] to-[#338b93] rounded-full text-2xl text-gray-600 active:translate-y-[1px]">
+      <button
+        className="flex justify-center items-center w-12 h-12 bg-gradient-to-r from-[#b6f492] to-[#338b93] rounded-full text-2xl text-gray-600 active:translate-y-[1px]"
+        onClick={handleTranslate}
+      >
         <i className="fa-solid fa-chevron-down cursor-pointer"></i>
       </button>
       <div className="w-full">
-        <textarea className="textarea text-[#b6f492]"></textarea>
+        <textarea
+          className="textarea text-[#b6f492]"
+          value={translatedText}
+          readOnly
+        ></textarea>
       </div>
     </div>
   );
