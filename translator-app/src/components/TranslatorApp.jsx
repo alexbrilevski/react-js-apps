@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { languages } from "../languagesData";
 
 const TranslatorApp = ({ onClose }) => {
@@ -10,7 +10,26 @@ const TranslatorApp = ({ onClose }) => {
   const [inputText, setInputText] = useState("");
   const [translatedText, setTranslatedText] = useState("");
   const [charsCount, setCharsCount] = useState(0);
+  const dropdownRef = useRef(null);
   const maxChars = 200;
+
+  useEffect(() => {
+    if (showLanguages) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedoen", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedoen", handleClickOutside);
+    };
+  }, [showLanguages]);
+
+  const handleClickOutside = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setShowLanguages(false);
+    }
+  };
 
   const handleLanguageClick = (type) => {
     setCurrentLanguageSelection(type);
@@ -83,7 +102,10 @@ const TranslatorApp = ({ onClose }) => {
         </div>
       </div>
       {showLanguages && (
-        <div className="absolute top-32 left-8 w-[calc(100%-4rem)] h-[calc(100%-9rem)] p-4 bg-gradient-to-r from-[#b6f492] to-[#338b93] rounded shadow-lg z-10 overflow-y-scroll scrollbar-hidden">
+        <div
+          ref={dropdownRef}
+          className="absolute top-32 left-8 w-[calc(100%-4rem)] h-[calc(100%-9rem)] p-4 bg-gradient-to-r from-[#b6f492] to-[#338b93] rounded shadow-lg z-10 overflow-y-scroll scrollbar-hidden"
+        >
           <ul>
             {Object.entries(languages).map(([code, name]) => (
               <li
